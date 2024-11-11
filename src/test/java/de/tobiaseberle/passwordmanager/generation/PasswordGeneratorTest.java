@@ -1,5 +1,6 @@
 package de.tobiaseberle.passwordmanager.generation;
 
+import de.tobiaseberle.passwordmanager.generation.exception.PasswordGenerationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

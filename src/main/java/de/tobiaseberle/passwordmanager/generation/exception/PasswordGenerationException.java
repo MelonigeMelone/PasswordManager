@@ -1,4 +1,4 @@
-package de.tobiaseberle.passwordmanager.generation;
+package de.tobiaseberle.passwordmanager.generation.exception;
 
 public class PasswordGenerationException extends Exception {
 

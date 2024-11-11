@@ -1,5 +1,7 @@
 package de.tobiaseberle.passwordmanager.generation;
 
+import de.tobiaseberle.passwordmanager.generation.exception.PasswordGenerationException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
