@@ -10,8 +10,8 @@ import de.tobiaseberle.passwordmanager.generation.PasswordGenerator;
 import de.tobiaseberle.passwordmanager.generation.exception.PasswordGenerationException;
 
 public class GeneratePasswordCommand implements ConsoleCommandExecutor {
-    private final Console console;
 
+    private final Console console;
 
     public GeneratePasswordCommand(Console console) {
         this.console = console;
@@ -26,13 +26,15 @@ public class GeneratePasswordCommand implements ConsoleCommandExecutor {
 
     @Override
     public String getHelpText() {
-        return "passwortGenerieren [LAENGE] [OPTIONEN] - Generiert ein Passwort mit der angegebenen Länge und den angegebenen Optionen. " +
-                "Es muss mindestens eine Option angegeben sein.\n" +
-                "Optionen:\n" +
-                "-g Großbuchstaben\n" +
-                "-k Kleinbuchstaben\n" +
-                "-s Sonderzeichen\n" +
-                "-z Zahlen\n";
+        return """
+                passwortGenerieren [LAENGE] [OPTIONEN] - Generiert ein Passwort mit der angegebenen Länge und den angegebenen Optionen. \
+                Es muss mindestens eine Option angegeben sein.
+                Optionen:
+                -g Großbuchstaben
+                -k Kleinbuchstaben
+                -s Sonderzeichen
+                -z Zahlen
+                """;
     }
 
     @Override

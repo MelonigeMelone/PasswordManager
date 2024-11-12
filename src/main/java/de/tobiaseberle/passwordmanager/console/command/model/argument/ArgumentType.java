@@ -23,10 +23,10 @@ public enum ArgumentType {
         }
     };
 
-   private final String pattern;
+    private final String pattern;
 
-    private ArgumentType(String pattern) {
-         this.pattern = pattern;
+    ArgumentType(String pattern) {
+        this.pattern = pattern;
     }
 
     public abstract Argument<?> parse(String value);

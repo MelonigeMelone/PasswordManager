@@ -4,11 +4,8 @@ import de.tobiaseberle.passwordmanager.console.command.handler.ConsoleCommandHan
 import de.tobiaseberle.passwordmanager.util.DateMethods;
 
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class Console implements Runnable{
-
-    private final Logger logger = Logger.getLogger(Console.class.getName());
 
     private final Scanner localScanner;
 
