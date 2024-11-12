@@ -3,6 +3,8 @@ package de.tobiaseberle.passwordmanager.console.command.handler;
 import de.tobiaseberle.passwordmanager.console.Console;
 import de.tobiaseberle.passwordmanager.console.command.HelloWorldCommand;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentType;
 
 import java.util.*;
 
@@ -40,12 +42,21 @@ public class ConsoleCommandHandler {
             argsAfterCommand[i - 1] = args[i];
         }
 
-        commandExecutor.onCommand(argsAfterCommand);
+        commandExecutor.onCommand(parseArguments(argsAfterCommand));
     }
 
     private Optional<ConsoleCommandExecutor> findCommand(String commandIdentifier) {
         return registeredConsoleCommands.stream()
                 .filter(command -> Arrays.asList(command.getCommandIdentifiers()).contains(commandIdentifier))
                 .findFirst();
+    }
+
+    private Argument<?>[] parseArguments(String[] args) {
+        Argument<?>[] arguments = new Argument<?>[args.length];
+        for (int i = 0; i < args.length; i++) {
+           ArgumentType argumentType = ArgumentType.fromString(args[i]);
+            arguments[i] = argumentType.parse(args[i]);
+        }
+        return arguments;
     }
 }
