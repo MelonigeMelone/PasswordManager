@@ -17,6 +17,11 @@ public class HelloWorldCommand implements ConsoleCommandExecutor {
     }
 
     @Override
+    public String[] getCommandIdentifiers() {
+        return new String[] {"helloworld"};
+    }
+
+    @Override
     public String getHelpText() {
         return "/helloworld - Gibt 'Hello World' aus.";
     }

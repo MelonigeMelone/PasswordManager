@@ -4,35 +4,48 @@ import de.tobiaseberle.passwordmanager.console.Console;
 import de.tobiaseberle.passwordmanager.console.command.HelloWorldCommand;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ConsoleCommandHandler {
 
     private final Console console;
 
-    private final Map<String, ConsoleCommandExecutor> registeredConsoleCommands = new HashMap<>();
+    private final List<ConsoleCommandExecutor> registeredConsoleCommands = new ArrayList<>();
 
     public ConsoleCommandHandler(Console console) {
         this.console = console;
 
-        registerCommand("helloworld", new HelloWorldCommand(console));
+        registerCommand(new HelloWorldCommand(console));
     }
 
-    public void registerCommand(String command, ConsoleCommandExecutor commandExecutor) {
-        registeredConsoleCommands.put(command, commandExecutor);
+    public void registerCommand(ConsoleCommandExecutor commandExecutor) {
+        registeredConsoleCommands.add(commandExecutor);
     }
 
     public void dispatchCommand(String[] args) {
-        if (registeredConsoleCommands.containsKey(args[0])) {
-            String[] argsAfterCommand = new String[args.length - 1];
-            for (int i = 0; i < args.length; i++) {
-                if (i == 0) continue;
-                argsAfterCommand[i - 1] = args[i];
-            }
-            registeredConsoleCommands.get(args[0]).onCommand(argsAfterCommand);
-        } else {
-           console.sendMessage("Es wurde kein Befehl mit dem Name '" + args[0] + "' gefunden!");
+        String commandIdentifier = args[0];
+
+        Optional<ConsoleCommandExecutor> optionalConsoleCommandExecutor = findCommand(commandIdentifier);
+
+        if(optionalConsoleCommandExecutor.isEmpty()) {
+            console.sendMessage("Es wurde kein Befehl mit dem Name '" + args[0] + "' gefunden!");
+            return;
         }
+
+        ConsoleCommandExecutor commandExecutor = optionalConsoleCommandExecutor.get();
+
+        String[] argsAfterCommand = new String[args.length - 1];
+        for (int i = 0; i < args.length; i++) {
+            if (i == 0) continue;
+            argsAfterCommand[i - 1] = args[i];
+        }
+
+        commandExecutor.onCommand(argsAfterCommand);
+    }
+
+    private Optional<ConsoleCommandExecutor> findCommand(String commandIdentifier) {
+        return registeredConsoleCommands.stream()
+                .filter(command -> Arrays.asList(command.getCommandIdentifiers()).contains(commandIdentifier))
+                .findFirst();
     }
 }
