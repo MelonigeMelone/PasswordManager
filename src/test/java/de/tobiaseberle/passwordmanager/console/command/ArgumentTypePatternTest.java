@@ -34,8 +34,6 @@ public class ArgumentTypePatternTest {
 
         Assertions.assertTrue("true".matches(booleanPattern));
         Assertions.assertTrue("false".matches(booleanPattern));
-        Assertions.assertTrue("1".matches(booleanPattern));
-        Assertions.assertTrue("0".matches(booleanPattern));
         Assertions.assertTrue("TRUE".matches(booleanPattern));
         Assertions.assertTrue("FALSE".matches(booleanPattern));
         Assertions.assertTrue("yes".matches(booleanPattern));
@@ -45,5 +43,7 @@ public class ArgumentTypePatternTest {
 
         Assertions.assertFalse("abc".matches(booleanPattern));
         Assertions.assertFalse("123".matches(booleanPattern));
+        Assertions.assertFalse("0".matches(booleanPattern));
+        Assertions.assertFalse("1".matches(booleanPattern));
     }
 }

@@ -16,7 +16,7 @@ public enum ArgumentType {
             return new IntegerArgument(value);
         }
     },
-    BOOLEAN("(?i:true|false|1|0|yes|no)") {
+    BOOLEAN("(?i:true|false|yes|no)") {
         @Override
         public BooleanArgument parse(String value) {
             return new BooleanArgument(value);
@@ -41,7 +41,7 @@ public enum ArgumentType {
                 .filter(argumentType -> argumentType != ArgumentType.STRING).toList();
 
         for (ArgumentType argumentType : nonDefaultArgumentTypes) {
-            if (argumentType.getPattern().matches(value)) {
+            if (value.matches(argumentType.getPattern())) {
                 return argumentType;
             }
         }

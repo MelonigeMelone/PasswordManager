@@ -2,6 +2,7 @@ package de.tobiaseberle.passwordmanager.console.command;
 
 import de.tobiaseberle.passwordmanager.console.Console;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
 
 public class HelloWorldCommand implements ConsoleCommandExecutor {
 
@@ -12,11 +13,6 @@ public class HelloWorldCommand implements ConsoleCommandExecutor {
     }
 
     @Override
-    public void onCommand(String[] args) {
-        this.console.sendMessage("Hello World");
-    }
-
-    @Override
     public String[] getCommandIdentifiers() {
         return new String[] {"helloworld"};
     }
@@ -24,5 +20,10 @@ public class HelloWorldCommand implements ConsoleCommandExecutor {
     @Override
     public String getHelpText() {
         return "/helloworld - Gibt 'Hello World' aus.";
+    }
+
+    @Override
+    public void onCommand(Argument<?>[] args) {
+        this.console.sendMessage("Hello World");
     }
 }
