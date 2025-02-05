@@ -6,7 +6,7 @@ public interface ConsoleCommandExecutor {
 
     String[] getCommandIdentifiers();
 
-    String getHelpText();
+    String getHelpText(String usedCommandName);
 
-    void onCommand(Argument<?>[] args);
+    void onCommand(String commandName, Argument<?>[] args);
 }

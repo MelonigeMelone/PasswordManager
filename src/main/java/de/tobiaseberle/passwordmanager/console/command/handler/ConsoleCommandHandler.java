@@ -2,7 +2,6 @@ package de.tobiaseberle.passwordmanager.console.command.handler;
 
 import de.tobiaseberle.passwordmanager.console.Console;
 import de.tobiaseberle.passwordmanager.console.command.GeneratePasswordCommand;
-import de.tobiaseberle.passwordmanager.console.command.HelloWorldCommand;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentType;
@@ -18,7 +17,6 @@ public class ConsoleCommandHandler {
     public ConsoleCommandHandler(Console console) {
         this.console = console;
 
-        registerCommand(new HelloWorldCommand(console));
         registerCommand(new GeneratePasswordCommand(console));
     }
 
@@ -44,7 +42,7 @@ public class ConsoleCommandHandler {
             argsAfterCommand[i - 1] = args[i];
         }
 
-        commandExecutor.onCommand(parseArguments(argsAfterCommand));
+        commandExecutor.onCommand(commandIdentifier, parseArguments(argsAfterCommand));
     }
 
     private Optional<ConsoleCommandExecutor> findCommand(String commandIdentifier) {

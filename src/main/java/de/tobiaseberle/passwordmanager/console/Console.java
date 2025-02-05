@@ -3,9 +3,11 @@ package de.tobiaseberle.passwordmanager.console;
 import de.tobiaseberle.passwordmanager.console.command.handler.ConsoleCommandHandler;
 import de.tobiaseberle.passwordmanager.util.DateMethods;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class Console implements Runnable{
+public class Console implements Runnable {
 
     private final Scanner localScanner;
 
