@@ -1,23 +1,28 @@
 package de.tobiaseberle.passwordmanager.console.command.handler;
 
 import de.tobiaseberle.passwordmanager.console.Console;
+import de.tobiaseberle.passwordmanager.console.command.CreateStorageCommand;
 import de.tobiaseberle.passwordmanager.console.command.GeneratePasswordCommand;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentType;
+import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 
 import java.util.*;
 
 public class ConsoleCommandHandler {
 
     private final Console console;
+    private final StorageHandler storageHandler;
 
     private final List<ConsoleCommandExecutor> registeredConsoleCommands = new ArrayList<>();
 
-    public ConsoleCommandHandler(Console console) {
+    public ConsoleCommandHandler(Console console, StorageHandler storageHandler) {
         this.console = console;
+        this.storageHandler = storageHandler;
 
         registerCommand(new GeneratePasswordCommand(console));
+        registerCommand(new CreateStorageCommand(console, storageHandler));
     }
 
     public void registerCommand(ConsoleCommandExecutor commandExecutor) {

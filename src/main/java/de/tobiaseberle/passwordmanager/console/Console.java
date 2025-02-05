@@ -1,6 +1,7 @@
 package de.tobiaseberle.passwordmanager.console;
 
 import de.tobiaseberle.passwordmanager.console.command.handler.ConsoleCommandHandler;
+import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 import de.tobiaseberle.passwordmanager.util.DateMethods;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class Console implements Runnable {
     private boolean running = true;
 
     public Console() {
-        this.consoleCommandHandler = new ConsoleCommandHandler(this);
+        this.consoleCommandHandler = new ConsoleCommandHandler(this, new StorageHandler());
         this.localScanner = new Scanner(System.in);
     }
 
