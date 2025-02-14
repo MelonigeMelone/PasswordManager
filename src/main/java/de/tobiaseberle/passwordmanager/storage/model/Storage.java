@@ -1,6 +1,7 @@
 package de.tobiaseberle.passwordmanager.storage.model;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Storage extends ArrayList<Entry> {
 
@@ -19,5 +20,9 @@ public class Storage extends ArrayList<Entry> {
 
     public String getPassword() {
         return password;
+    }
+
+    public Optional<Entry> getEntry(String id) {
+        return this.stream().filter(entry -> entry.getIdentifier().equals(id)).findFirst();
     }
 }

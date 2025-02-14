@@ -1,25 +1,25 @@
 package de.tobiaseberle.passwordmanager.console.command;
 
 import de.tobiaseberle.passwordmanager.console.Console;
-import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.StringArgument;
+import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutorHelper;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.*;
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 import de.tobiaseberle.passwordmanager.storage.model.Storage;
 
-public class CreateStorageCommand implements ConsoleCommandExecutor {
+import java.util.List;
 
-    private final Console console;
+public class CreateStorageCommand extends ConsoleCommandExecutorHelper {
+
     private final StorageHandler storageHandler;
 
     public CreateStorageCommand(Console console, StorageHandler storageHandler) {
-        this.console = console;
+        super(console);
         this.storageHandler = storageHandler;
     }
 
     @Override
     public String[] getCommandIdentifiers() {
-        return new String[] {
+        return new String[]{
                 "tresorErstellen",
                 "createStorage"
         };
@@ -28,22 +28,25 @@ public class CreateStorageCommand implements ConsoleCommandExecutor {
     @Override
     public String getHelpText(String usedCommandName) {
         return usedCommandName + """
-                [IDENTIFIER] [PASSWORD] - Erstellt ein neuen Tresor der zum Speichern von Passwörtern verwendet werden kann. \
+                 [IDENTIFIER] [PASSWORD] - Erstellt ein neuen Tresor der zum Speichern von Passwörtern verwendet werden kann. \
                 ACHTUNG: OHNE DAS PASSWORT SIND ALLE INFORMATIONEN IM TRESOR VERLOREN!
                 """;
     }
 
     @Override
-    public void onCommand(String commandName, Argument<?>[] args) {
-        if(args.length != 2 || !(args[0] instanceof StringArgument) || !(args[1] instanceof StringArgument)) {
-            this.console.sendMessage(getHelpText(commandName));
-            return;
-        }
+    public List<ArgumentOrder> getAllowedOrderOfArguments() {
+        return List.of(new ArgumentOrder(
+                new ArgumentType[]{ArgumentType.STRING, ArgumentType.STRING},
+                new String[]{"IDENTIFIER", "PASSWORD"}
+        ));
+    }
 
-        String identifier = ((StringArgument) args[0]).getValue();
-        String password = ((StringArgument) args[0]).getValue();
+    @Override
+    protected void onCommandHelper(ArgumentMap argumentMap) {
+        String identifier = ((StringArgument) argumentMap.get("IDENTIFIER")).getValue();
+        String password = ((StringArgument) argumentMap.get("PASSWORD")).getValue();
 
-        if(storageHandler.existsStorage(identifier)) {
+        if (storageHandler.existsStorage(identifier)) {
             this.console.sendMessage("Es ist bereits ein Tresor mit dem Identifer '" + identifier + "' geladen, bitte wähle einen anderen Identifier!");
             return;
         }

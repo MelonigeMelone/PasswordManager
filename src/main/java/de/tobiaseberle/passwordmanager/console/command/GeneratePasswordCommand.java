@@ -32,7 +32,7 @@ public class GeneratePasswordCommand implements ConsoleCommandExecutor {
     @Override
     public String getHelpText(String usedCommandName) {
         return usedCommandName + """
-                 [LAENGE] [OPTIONEN] - Generiert ein Passwort mit der angegebenen Länge und den angegebenen Optionen. \
+                 [LAENGE] (OPTIONEN) - Generiert ein Passwort mit der angegebenen Länge und den angegebenen Optionen. \
                 Es muss mindestens eine Option angegeben sein.
                 Optionen:
                 -g Großbuchstaben

@@ -2,28 +2,29 @@ package de.tobiaseberle.passwordmanager.storage.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Entry {
 
-    private final int id;
+    private final String identifier;
     private String name;
 
     private final List<Field> fields;
 
-    public Entry(int id, String name) {
-        this.id = id;
+    public Entry(String identifier, String name) {
+        this.identifier = identifier;
         this.name = name;
         this.fields = new ArrayList<>();
     }
 
-    public Entry(int id, String name, List<Field> fields) {
-        this.id = id;
+    public Entry(String identifier, String name, List<Field> fields) {
+        this.identifier = identifier;
         this.name = name;
         this.fields = fields;
     }
 
-    public int getId() {
-        return id;
+    public String getIdentifier() {
+        return identifier;
     }
 
     public String getName() {
@@ -32,6 +33,10 @@ public class Entry {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Optional<Field> getField(String name) {
+        return fields.stream().filter(field -> field.getName().equals(name)).findFirst();
     }
 
     public List<Field> getFields() {
