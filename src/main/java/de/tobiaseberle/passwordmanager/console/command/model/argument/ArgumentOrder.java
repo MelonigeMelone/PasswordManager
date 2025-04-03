@@ -2,21 +2,19 @@ package de.tobiaseberle.passwordmanager.console.command.model.argument;
 
 public class ArgumentOrder {
 
-    private final ArgumentType[] argumentTypes;
-    private final String[] argumentIds;
+    private final ArgumentData[] arguments;
 
-    public ArgumentOrder(ArgumentType[] argumentTypes, String[] argumentIds) {
-        this.argumentTypes = argumentTypes;
-        this.argumentIds = argumentIds;
+    public ArgumentOrder(ArgumentData[] arguments) {
+        this.arguments = arguments;
     }
 
-    public boolean matchesOrder(Argument<?>[] args) {
-        if (args.length != argumentTypes.length) {
+    public boolean matchesOrder(AbstractArgumentValue<?>[] args) {
+        if (args.length != arguments.length) {
             return false;
         }
 
         for (int i = 0; i < args.length; i++) {
-            if (args[i].getArgumentType() != argumentTypes[i]) {
+            if (args[i].getArgumentType() != arguments[i].getArgumentType()) {
                 return false;
             }
         }
@@ -24,7 +22,12 @@ public class ArgumentOrder {
         return true;
     }
 
-    public String[] getArgumentIds() {
-        return argumentIds;
+    public ArgumentData[] getArguments() {
+        return arguments;
     }
+
+    public String getArgumentId(int index) {
+        return arguments[index].getArgumentId();
+    }
+
 }

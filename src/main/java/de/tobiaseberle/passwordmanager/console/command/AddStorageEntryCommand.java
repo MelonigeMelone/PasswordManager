@@ -2,8 +2,8 @@ package de.tobiaseberle.passwordmanager.console.command;
 
 import de.tobiaseberle.passwordmanager.console.Console;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.StringArgument;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.AbstractArgumentValue;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.StringArgumentValue;
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 import de.tobiaseberle.passwordmanager.storage.model.Entry;
 import de.tobiaseberle.passwordmanager.storage.model.Storage;
@@ -30,20 +30,20 @@ public class AddStorageEntryCommand implements ConsoleCommandExecutor {
     }
 
     @Override
-    public String getHelpText(String usedCommandName) {
+    public String getCommandDescription(String usedCommandName) {
         return usedCommandName + """
                 [STORAGE-IDENTIFIER] [ENTRY-IDENTIFIER] [ENTRY-NAME] - Erstellt ein neuen Tresor Eintrag. Jeder Identifier kann nur einmal pro Tresor vergeben werden
                 """;
     }
 
     @Override
-    public void onCommand(String commandName, Argument<?>[] args) {
-        if(args.length != 3 || !Arrays.stream(args).allMatch(argument -> argument instanceof StringArgument)) {
-            this.console.sendMessage(getHelpText(commandName));
+    public void onCommand(String commandName, AbstractArgumentValue<?>[] args) {
+        if(args.length != 3 || !Arrays.stream(args).allMatch(argument -> argument instanceof StringArgumentValue)) {
+            this.console.sendMessage(getCommandDescription(commandName));
             return;
         }
 
-        String storageIdentifier = ((StringArgument) args[0]).getValue();
+        String storageIdentifier = ((StringArgumentValue) args[0]).getValue();
 
         Optional<Storage> optionalStorage = storageHandler.getStorage(storageIdentifier);
         if(optionalStorage.isEmpty()) {
@@ -51,7 +51,7 @@ public class AddStorageEntryCommand implements ConsoleCommandExecutor {
             return;
         }
 
-        String entryIdentifier = ((StringArgument) args[1]).getValue();
+        String entryIdentifier = ((StringArgumentValue) args[1]).getValue();
 
         Storage storage = optionalStorage.get();
         Optional<Entry> optionalEntry = storage.getEntry(entryIdentifier);
@@ -60,7 +60,7 @@ public class AddStorageEntryCommand implements ConsoleCommandExecutor {
             return;
         }
 
-        String entryName = ((StringArgument) args[2]).getValue();
+        String entryName = ((StringArgumentValue) args[2]).getValue();
         Entry entry = new Entry(entryIdentifier, entryName);
         storage.add(entry);
         this.console.sendMessage("Der Eintrag " + entryIdentifier + " wurde erfolgreich im Tresor " + storageIdentifier + " erstellt!");

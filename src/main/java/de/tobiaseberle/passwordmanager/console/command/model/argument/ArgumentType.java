@@ -6,20 +6,26 @@ import java.util.stream.Stream;
 public enum ArgumentType {
     STRING(".*") {
         @Override
-        public StringArgument parse(String value) {
-            return new StringArgument(value);
+        public StringArgumentValue parse(String value) {
+            return new StringArgumentValue(value);
         }
     },
     INTEGER("\\d+") {
         @Override
-        public IntegerArgument parse(String value) {
-            return new IntegerArgument(value);
+        public IntegerArgumentValue parse(String value) {
+            return new IntegerArgumentValue(value);
         }
     },
     BOOLEAN("(?i:true|false|yes|no)") {
         @Override
-        public BooleanArgument parse(String value) {
-            return new BooleanArgument(value);
+        public BooleanArgumentValue parse(String value) {
+            return new BooleanArgumentValue(value);
+        }
+    },
+    OPTION(".*") {
+        @Override
+        public OptionArgumentValue parse(String value) {
+            return new OptionArgumentValue(value);
         }
     };
 
@@ -29,7 +35,7 @@ public enum ArgumentType {
         this.pattern = pattern;
     }
 
-    public abstract Argument<?> parse(String value);
+    public abstract AbstractArgumentValue<?> parse(String value);
 
     public String getPattern() {
         return pattern;

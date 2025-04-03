@@ -6,7 +6,7 @@ import de.tobiaseberle.passwordmanager.console.command.AddStorageEntryCommand;
 import de.tobiaseberle.passwordmanager.console.command.CreateStorageCommand;
 import de.tobiaseberle.passwordmanager.console.command.GeneratePasswordCommand;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.AbstractArgumentValue;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentType;
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 
@@ -60,12 +60,16 @@ public class ConsoleCommandHandler {
                 .findFirst();
     }
 
-    private Argument<?>[] parseArguments(String[] args) {
-        Argument<?>[] arguments = new Argument<?>[args.length];
+    private AbstractArgumentValue<?>[] parseArguments(String[] args) {
+        AbstractArgumentValue<?>[] abstractArgumentValues = new AbstractArgumentValue<?>[args.length];
         for (int i = 0; i < args.length; i++) {
            ArgumentType argumentType = ArgumentType.fromString(args[i]);
-            arguments[i] = argumentType.parse(args[i]);
+            abstractArgumentValues[i] = argumentType.parse(args[i]);
         }
-        return arguments;
+        return abstractArgumentValues;
+    }
+
+    public List<ConsoleCommandExecutor> getRegisteredConsoleCommands() {
+        return registeredConsoleCommands;
     }
 }

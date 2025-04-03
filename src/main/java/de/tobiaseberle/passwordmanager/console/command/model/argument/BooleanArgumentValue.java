@@ -1,10 +1,10 @@
 package de.tobiaseberle.passwordmanager.console.command.model.argument;
 
-public class BooleanArgument extends Argument<Boolean> {
+public class BooleanArgumentValue extends AbstractArgumentValue<Boolean> {
 
     private final boolean parsedValue;
 
-    public BooleanArgument(String value) {
+    public BooleanArgumentValue(String value) {
         super(value, ArgumentType.BOOLEAN);
 
         this.parsedValue = parseBoolean(value);

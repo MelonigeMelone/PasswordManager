@@ -1,8 +1,8 @@
 package de.tobiaseberle.passwordmanager.console.command.model.argument;
 
-public class StringArgument extends Argument<String>{
+public class StringArgumentValue extends AbstractArgumentValue<String> {
 
-    public StringArgument(String value) {
+    public StringArgumentValue(String value) {
         super(value, ArgumentType.STRING);
     }
 

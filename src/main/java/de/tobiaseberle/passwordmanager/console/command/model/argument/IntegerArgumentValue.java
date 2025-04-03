@@ -1,10 +1,10 @@
 package de.tobiaseberle.passwordmanager.console.command.model.argument;
 
-public class IntegerArgument extends Argument<Integer> {
+public class IntegerArgumentValue extends AbstractArgumentValue<Integer> {
 
     private final int parsedValue;
 
-    public IntegerArgument(String value) {
+    public IntegerArgumentValue(String value) {
         super(value, ArgumentType.INTEGER);
 
         this.parsedValue = Integer.parseInt(value);

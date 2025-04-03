@@ -1,24 +1,22 @@
 package de.tobiaseberle.passwordmanager.console.command;
 
 import de.tobiaseberle.passwordmanager.console.Console;
-import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.Argument;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.StringArgument;
+import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutorHelper;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.*;
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 import de.tobiaseberle.passwordmanager.storage.model.Entry;
 import de.tobiaseberle.passwordmanager.storage.model.Field;
 import de.tobiaseberle.passwordmanager.storage.model.Storage;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-public class AddEntryFieldCommand implements ConsoleCommandExecutor {
+public class AddEntryFieldCommand extends ConsoleCommandExecutorHelper {
 
-    private final Console console;
     private final StorageHandler storageHandler;
 
     public AddEntryFieldCommand(Console console, StorageHandler storageHandler) {
-        this.console = console;
+        super(console);
         this.storageHandler = storageHandler;
     }
 
@@ -32,56 +30,78 @@ public class AddEntryFieldCommand implements ConsoleCommandExecutor {
     }
 
     @Override
-    public String getHelpText(String usedCommandName) {
-        return usedCommandName + """
-                [STORAGE-IDENTIFIER] [ENTRY-IDENTIFIER] [FIELD-NANE] [FIELD-VALUE] - Erstellt ein neuen Tresor Eintrag jeder Identifier kann nur einmal pro Tresor vergeben werden
-                Optionen:
-                -p Definiert das Feld als Passwort Feld, dementsprechend wird der Wert nicht als Klartext angezeigt
+    public String getCommandDescription(String usedCommandName) {
+        return """
+                Erstellt ein neuen Tresor Eintrag jeder Identifier kann nur einmal pro Tresor vergeben werden
                 """;
     }
 
     @Override
-    public void onCommand(String commandName, Argument<?>[] args) {
-        if(args.length < 4 || args.length > 6 || !Arrays.stream(args).allMatch(argument -> argument instanceof StringArgument)) {
-            this.console.sendMessage(getHelpText(commandName));
-            return;
-        }
+    public List<ArgumentOrder> getAllowedOrderOfArguments() {
+        return List.of(
+                new ArgumentOrder(
+                    new ArgumentData[]{
+                            new ArgumentData("storageId", "STORAGE-IDENTIFIER", ArgumentType.STRING),
+                            new ArgumentData("entryId", "ENTRY-IDENTIFIER", ArgumentType.STRING),
+                            new ArgumentData("fieldName", "FIELD-NAME", ArgumentType.STRING),
+                            new ArgumentData("fieldValue", "FIELD-VALUE", ArgumentType.STRING),
+                            new ArgumentData("option", "OPTIONEN", ArgumentType.OPTION,
+                                new String[] {
+                                        "-p"
+                                },
+                                new String[]{
+                                        "Definiert das Feld als Passwort Feld, dementsprechend wird der Wert nicht als Klartext angezeigt"
+                                }
+                            )
+                    }
+                ),
+                new ArgumentOrder(
+                        new ArgumentData[]{
+                                new ArgumentData("storageId", "STORAGE-IDENTIFIER", ArgumentType.STRING),
+                                new ArgumentData("entryId", "ENTRY-IDENTIFIER", ArgumentType.STRING),
+                                new ArgumentData("fieldName", "FIELD-NAME", ArgumentType.STRING),
+                                new ArgumentData("fieldValue", "FIELD-VALUE", ArgumentType.STRING)
+                        }
+                )
+        );
+    }
 
-        String storageIdentifier = ((StringArgument) args[0]).getValue();
-        Optional<Storage> optionalStorage = storageHandler.getStorage(storageIdentifier);
+    @Override
+    protected void onCommandHelper(ArgumentMap argumentMap) {
+        String storageId = ((StringArgumentValue) argumentMap.get("storageId")).getValue();
+
+        Optional<Storage> optionalStorage = storageHandler.getStorage(storageId);
         if(optionalStorage.isEmpty()) {
-            this.console.sendMessage("Es konnte kein Tresor mit dem Identifier " + storageIdentifier + " gefunden werden!");
+            this.console.sendMessage("Es konnte kein Tresor mit dem Identifier " + storageId + " gefunden werden!");
             return;
         }
 
+        String entryId = ((StringArgumentValue) argumentMap.get("entryId")).getValue();
         Storage storage = optionalStorage.get();
 
-        String entryIdentifier = ((StringArgument) args[1]).getValue();
-        Optional<Entry> optionalEntry = storage.getEntry(entryIdentifier);
+        Optional<Entry> optionalEntry = storage.getEntry(entryId);
         if(optionalEntry.isEmpty()) {
-            this.console.sendMessage("Es konnte kein Eintrag mit dem Identifier " + entryIdentifier + " im Tresor " +
+            this.console.sendMessage("Es konnte kein Eintrag mit dem Identifier " + entryId + " im Tresor " +
                     storage.getIdentifier() + " gefunden werden!");
             return;
         }
 
         Entry entry = optionalEntry.get();
-        String fieldName = ((StringArgument) args[2]).getValue();
+        String fieldName = ((StringArgumentValue) argumentMap.get("fieldName")).getValue();
 
         Optional<Field> optionalField = entry.getField(fieldName);
         if(optionalField.isPresent()) {
-            this.console.sendMessage("Es existiert bereits ein Feld mit dem Namen " + ((StringArgument) args[2]).getValue() +
+            this.console.sendMessage("Es existiert bereits ein Feld mit dem Namen " + fieldName +
                     " im Eintrag " + entry.getIdentifier() + " im Tresor " + storage.getIdentifier() + "!");
             return;
         }
 
-        String fieldValue = ((StringArgument) args[3]).getValue();
+        String fieldValue = ((StringArgumentValue) argumentMap.get("fieldValue")).getValue();
         boolean isPassword = false;
 
-        if(args.length > 4) {
-            if(args[4] instanceof StringArgument) {
-                if(((StringArgument) args[4]).getValue().equals("-p")) {
-                    isPassword = true;
-                }
+        if(argumentMap.size() == 5) {
+            if(((OptionArgumentValue) argumentMap.get("option")).containsOption("-p")) {
+                isPassword = true;
             }
         }
 

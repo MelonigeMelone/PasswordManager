@@ -4,7 +4,7 @@ import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentTy
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ArgumentTypePatternTest {
+public class AbstractArgumentDataValueTypePatternTest {
 
 
     @Test
