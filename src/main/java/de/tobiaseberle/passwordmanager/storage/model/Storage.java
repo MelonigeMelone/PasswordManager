@@ -5,8 +5,11 @@ import java.util.Optional;
 
 public class Storage extends ArrayList<Entry> {
 
-    private final String identifier;
-    private final String password;
+    private String identifier;
+    private String password;
+
+    public Storage() {
+    }
 
     public Storage(String identifier, String password) {
         this.identifier = identifier;
@@ -17,9 +20,16 @@ public class Storage extends ArrayList<Entry> {
         return identifier;
     }
 
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Optional<Entry> getEntry(String id) {

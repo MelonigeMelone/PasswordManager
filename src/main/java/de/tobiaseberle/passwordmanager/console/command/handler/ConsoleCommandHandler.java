@@ -1,10 +1,7 @@
 package de.tobiaseberle.passwordmanager.console.command.handler;
 
 import de.tobiaseberle.passwordmanager.console.Console;
-import de.tobiaseberle.passwordmanager.console.command.AddEntryFieldCommand;
-import de.tobiaseberle.passwordmanager.console.command.AddStorageEntryCommand;
-import de.tobiaseberle.passwordmanager.console.command.CreateStorageCommand;
-import de.tobiaseberle.passwordmanager.console.command.GeneratePasswordCommand;
+import de.tobiaseberle.passwordmanager.console.command.*;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.AbstractArgumentValue;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentType;
@@ -28,6 +25,8 @@ public class ConsoleCommandHandler {
         registerCommand(new AddStorageEntryCommand(console, storageHandler));
         registerCommand(new CreateStorageCommand(console, storageHandler));
         registerCommand(new GeneratePasswordCommand(console));
+        registerCommand(new ExportStorageCommand(console, storageHandler));
+        registerCommand(new ImportStorageCommand(console, storageHandler));
     }
 
     public void registerCommand(ConsoleCommandExecutor commandExecutor) {
