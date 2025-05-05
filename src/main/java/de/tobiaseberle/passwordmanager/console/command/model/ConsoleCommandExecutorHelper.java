@@ -42,6 +42,7 @@ public abstract class ConsoleCommandExecutorHelper implements ConsoleCommandExec
         ArgumentMap argumentMap = new ArgumentMap();
         for (int i = 0; i < args.length; i++) {
             AbstractArgumentValue<?> abstractArgumentValue = args[i];
+
             argumentMap.put(argumentOrder.getArgumentId(i), abstractArgumentValue);
         }
         return argumentMap;

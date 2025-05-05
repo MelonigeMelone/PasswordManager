@@ -8,6 +8,7 @@ import de.tobiaseberle.passwordmanager.console.command.GeneratePasswordCommand;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.AbstractArgumentValue;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentType;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.OptionArgumentValue;
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 
 import java.util.*;
@@ -64,6 +65,27 @@ public class ConsoleCommandHandler {
         AbstractArgumentValue<?>[] abstractArgumentValues = new AbstractArgumentValue<?>[args.length];
         for (int i = 0; i < args.length; i++) {
            ArgumentType argumentType = ArgumentType.fromString(args[i]);
+           if(argumentType.equals(ArgumentType.OPTION)) {
+               String[] leftArgs = new String[args.length-i];
+               for(int j = 0; j<leftArgs.length; j++){
+                   leftArgs[j] = args[j+i];
+               }
+               abstractArgumentValues[i] = new OptionArgumentValue(leftArgs);
+               AbstractArgumentValue<?>[] newAbstractArgumentValues =
+                       new AbstractArgumentValue<?>[(int) Arrays.stream(abstractArgumentValues)
+                               .filter(Objects::nonNull).count()];
+
+               int offset = 0;
+               for(int k = 0; k<abstractArgumentValues.length; k++) {
+                   if(abstractArgumentValues[k] != null) {
+                       newAbstractArgumentValues[k] = abstractArgumentValues[k-offset];
+                   } else {
+                       offset++;
+                   }
+               }
+
+               return newAbstractArgumentValues;
+           }
             abstractArgumentValues[i] = argumentType.parse(args[i]);
         }
         return abstractArgumentValues;

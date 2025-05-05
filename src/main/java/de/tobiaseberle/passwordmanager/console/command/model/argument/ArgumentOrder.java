@@ -9,17 +9,40 @@ public class ArgumentOrder {
     }
 
     public boolean matchesOrder(AbstractArgumentValue<?>[] args) {
-        if (args.length != arguments.length) {
+        if (!lengthCheck(args.length)) {
             return false;
         }
 
+        ArgumentData lastArgumentData = null;
         for (int i = 0; i < args.length; i++) {
-            if (args[i].getArgumentType() != arguments[i].getArgumentType()) {
-                return false;
+            if(i >= arguments.length && lastArgumentData != null && lastArgumentData.getArgumentType().equals(ArgumentType.OPTION)) {
+
+            } else {
+                lastArgumentData = arguments[i];
+                if (args[i].getArgumentType() != arguments[i].getArgumentType()) {
+                    return false;
+                }
             }
         }
 
         return true;
+    }
+
+    public boolean lengthCheck(int length) {
+        int minLength = 0, maxLength = 0;
+
+        for(ArgumentData argumentData : arguments) {
+            if(argumentData.hasCommandOptions()) {
+               minLength+=1;
+               maxLength+=argumentData.getCommandOptions().length;
+            } else {
+                minLength+=1;
+                maxLength+=1;
+            }
+        }
+
+
+        return length >= minLength && length<= maxLength;
     }
 
     public ArgumentData[] getArguments() {

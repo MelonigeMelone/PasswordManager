@@ -22,7 +22,7 @@ public enum ArgumentType {
             return new BooleanArgumentValue(value);
         }
     },
-    OPTION(".*") {
+    OPTION("-[a-zA-Z\\-]+") {
         @Override
         public OptionArgumentValue parse(String value) {
             return new OptionArgumentValue(value);

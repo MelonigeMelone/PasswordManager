@@ -10,6 +10,12 @@ public class OptionArgumentValue extends AbstractArgumentValue<String[]> {
         this.value = value.split(" ");
     }
 
+    public OptionArgumentValue(String[] value) {
+        super(String.join(" ", value), ArgumentType.OPTION);
+
+        this.value = value;
+    }
+
     @Override
     public String[] getValue() {
         return value;
