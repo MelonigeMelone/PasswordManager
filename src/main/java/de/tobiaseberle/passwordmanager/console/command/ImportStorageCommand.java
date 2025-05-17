@@ -5,14 +5,9 @@ import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecu
 import de.tobiaseberle.passwordmanager.console.command.model.argument.*;
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 import de.tobiaseberle.passwordmanager.storage.model.Storage;
-import de.tobiaseberle.passwordmanager.util.EncryptedJsonUtil;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
-import java.util.Optional;
 
 public class ImportStorageCommand extends ConsoleCommandExecutorHelper {
 
@@ -61,22 +56,16 @@ public class ImportStorageCommand extends ConsoleCommandExecutorHelper {
             return;
         }
 
+        if(storageHandler.existsStorage(storageIdentifier)) {
+            this.console.sendMessage("Es existiert bereits ein Tresor mit dem Identifier '" + storageIdentifier + "'!");
+            return;
+        }
+
         try {
-            String encryptedContent = Files.readString(file.toPath());
-            Storage decryptedStorage = EncryptedJsonUtil.decryptObject(encryptedContent, password, Storage.class);
-            decryptedStorage.setIdentifier(storageIdentifier);
+            Storage storage = storageHandler.decryptStorage(file, password);
 
-            if(storageHandler.existsStorage(storageIdentifier)) {
-                this.console.sendMessage("Es existiert bereits ein Tresor mit dem Identifier '" + decryptedStorage.getIdentifier() + "'!");
-                return;
-            }
-
-            storageHandler.addStorage(decryptedStorage);
-            this.console.sendMessage("Der Tresor '" + decryptedStorage.getIdentifier() + "' wurde erfolgreich importiert.");
-
-
-        } catch (IOException exception) {
-            this.console.sendMessage("Fehler beim Lesen der Datei: " + exception.getMessage());
+            storageHandler.addStorage(storage);
+            this.console.sendMessage("Der Tresor '" + storageIdentifier + "' wurde erfolgreich importiert.");
         } catch (Exception exception) {
             this.console.sendMessage("Fehler beim Entschlüsseln oder Importieren des Tresors: " + exception.getMessage());
         }

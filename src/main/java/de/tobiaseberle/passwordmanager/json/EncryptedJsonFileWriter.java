@@ -1,4 +1,4 @@
-package de.tobiaseberle.passwordmanager.util;
+package de.tobiaseberle.passwordmanager.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-public class EncryptedJsonUtil {
+public class EncryptedJsonFileWriter {
 
     private static final String SECRET_KEY_ALGORITHM = "PBKDF2WithHmacSHA256";
     private static final String ENCRYPTION_ALGORITHM = "AES/CBC/PKCS5Padding";

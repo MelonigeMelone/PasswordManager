@@ -1,18 +1,19 @@
 package de.tobiaseberle.passwordmanager.util;
 
+import de.tobiaseberle.passwordmanager.json.EncryptedJsonFileWriter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EncryptedJsonUtilTest {
+public class EncryptedJsonFileWriterTest {
 
     @Test
     public void testEncryptAndDecrypt() throws Exception {
         EncryptedJsonTestClass original = new EncryptedJsonTestClass("Alice", 42);
         String password = "correct-password";
 
-        String encrypted = EncryptedJsonUtil.encryptObject(original, password);
-        EncryptedJsonTestClass decrypted = EncryptedJsonUtil.decryptObject(encrypted, password, EncryptedJsonTestClass.class);
+        String encrypted = EncryptedJsonFileWriter.encryptObject(original, password);
+        EncryptedJsonTestClass decrypted = EncryptedJsonFileWriter.decryptObject(encrypted, password, EncryptedJsonTestClass.class);
 
         assertEquals(original, decrypted);
     }
@@ -23,10 +24,10 @@ public class EncryptedJsonUtilTest {
         String correctPassword = "secret";
         String wrongPassword = "wrong";
 
-        String encrypted = EncryptedJsonUtil.encryptObject(original, correctPassword);
+        String encrypted = EncryptedJsonFileWriter.encryptObject(original, correctPassword);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            EncryptedJsonUtil.decryptObject(encrypted, wrongPassword, EncryptedJsonTestClass.class);
+            EncryptedJsonFileWriter.decryptObject(encrypted, wrongPassword, EncryptedJsonTestClass.class);
         });
 
         assertTrue(exception.getMessage() != null && !exception.getMessage().isEmpty());
@@ -37,7 +38,7 @@ public class EncryptedJsonUtilTest {
         String corrupted = "invalid-encrypted-data";
 
         assertThrows(Exception.class, () -> {
-            EncryptedJsonUtil.decryptObject(corrupted, "anyPassword", EncryptedJsonTestClass.class);
+            EncryptedJsonFileWriter.decryptObject(corrupted, "anyPassword", EncryptedJsonTestClass.class);
         });
     }
 
@@ -46,7 +47,7 @@ public class EncryptedJsonUtilTest {
         EncryptedJsonTestClass obj = new EncryptedJsonTestClass("Eve", 77);
 
         assertThrows(NullPointerException.class, () -> {
-            EncryptedJsonUtil.encryptObject(obj, null);
+            EncryptedJsonFileWriter.encryptObject(obj, null);
         });
     }
 
@@ -55,10 +56,10 @@ public class EncryptedJsonUtilTest {
         EncryptedJsonTestClass original = new EncryptedJsonTestClass("Carol", 88);
         String password = "pass";
 
-        String encrypted = EncryptedJsonUtil.encryptObject(original, password);
+        String encrypted = EncryptedJsonFileWriter.encryptObject(original, password);
 
         assertThrows(Exception.class, () -> {
-            EncryptedJsonUtil.decryptObject(encrypted, password, String.class);
+            EncryptedJsonFileWriter.decryptObject(encrypted, password, String.class);
         });
     }
 }

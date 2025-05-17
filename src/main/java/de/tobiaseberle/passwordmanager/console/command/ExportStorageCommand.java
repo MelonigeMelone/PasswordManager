@@ -5,10 +5,7 @@ import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecu
 import de.tobiaseberle.passwordmanager.console.command.model.argument.*;
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 import de.tobiaseberle.passwordmanager.storage.model.Storage;
-import de.tobiaseberle.passwordmanager.util.EncryptedJsonUtil;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,16 +54,9 @@ public class ExportStorageCommand extends ConsoleCommandExecutorHelper {
         }
 
         Storage storage = optionalStorage.get();
-        String password = storage.getPassword();
 
         try {
-            String encryptedJson = EncryptedJsonUtil.encryptObject(storage, password);
-
-            File file = new File(path + "tresor_" + identifier + ".json");
-            try (FileWriter writer = new FileWriter(file)) {
-                writer.write(encryptedJson);
-            }
-
+            storageHandler.encryptStorage(storage, path, identifier);
             this.console.sendMessage("Der Tresor mit dem Identifier '" + identifier + "' wurde erfolgreich nach " + path + " exportiert!");
         } catch (Exception exception) {
             this.console.sendMessage("Beim Exportieren des Tresors trat ein Fehler auf." + exception.getMessage());
