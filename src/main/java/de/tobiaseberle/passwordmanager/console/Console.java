@@ -4,9 +4,6 @@ import de.tobiaseberle.passwordmanager.console.command.handler.ConsoleCommandHan
 import de.tobiaseberle.passwordmanager.storage.StorageHandler;
 import de.tobiaseberle.passwordmanager.util.DateMethods;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Console implements Runnable {

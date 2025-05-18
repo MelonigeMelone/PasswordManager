@@ -7,6 +7,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -34,7 +35,7 @@ public class EncryptedJsonFileWriter {
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
         cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
-        byte[] encrypted = cipher.doFinal(json.getBytes("UTF-8"));
+        byte[] encrypted = cipher.doFinal(json.getBytes(StandardCharsets.UTF_8));
 
         byte[] combined = new byte[salt.length + iv.length + encrypted.length];
         System.arraycopy(salt, 0, combined, 0, salt.length);
@@ -60,7 +61,7 @@ public class EncryptedJsonFileWriter {
         cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
 
         byte[] decryptedBytes = cipher.doFinal(encrypted);
-        String json = new String(decryptedBytes, "UTF-8");
+        String json = new String(decryptedBytes, StandardCharsets.UTF_8);
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, valueType);

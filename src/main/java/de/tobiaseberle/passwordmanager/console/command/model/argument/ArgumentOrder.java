@@ -15,9 +15,7 @@ public class ArgumentOrder {
 
         ArgumentData lastArgumentData = null;
         for (int i = 0; i < args.length; i++) {
-            if(i >= arguments.length && lastArgumentData != null && lastArgumentData.getArgumentType().equals(ArgumentType.OPTION)) {
-
-            } else {
+            if(!(i >= arguments.length && lastArgumentData != null && lastArgumentData.getArgumentType().equals(ArgumentType.OPTION))) {
                 lastArgumentData = arguments[i];
                 if (args[i].getArgumentType() != arguments[i].getArgumentType()) {
                     return false;

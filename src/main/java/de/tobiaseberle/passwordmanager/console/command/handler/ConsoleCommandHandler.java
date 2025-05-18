@@ -13,13 +13,11 @@ import java.util.*;
 public class ConsoleCommandHandler {
 
     private final Console console;
-    private final StorageHandler storageHandler;
 
     private final List<ConsoleCommandExecutor> registeredConsoleCommands = new ArrayList<>();
 
     public ConsoleCommandHandler(Console console, StorageHandler storageHandler) {
         this.console = console;
-        this.storageHandler = storageHandler;
 
         registerCommand(new AddEntryFieldCommand(console, storageHandler));
         registerCommand(new AddStorageEntryCommand(console, storageHandler));

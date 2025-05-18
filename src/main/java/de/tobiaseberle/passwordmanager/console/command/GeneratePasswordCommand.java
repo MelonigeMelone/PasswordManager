@@ -1,7 +1,6 @@
 package de.tobiaseberle.passwordmanager.console.command;
 
 import de.tobiaseberle.passwordmanager.console.Console;
-import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutor;
 import de.tobiaseberle.passwordmanager.console.command.model.ConsoleCommandExecutorHelper;
 import de.tobiaseberle.passwordmanager.console.command.model.argument.*;
 import de.tobiaseberle.passwordmanager.generation.PasswordGenerator;

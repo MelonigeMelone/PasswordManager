@@ -1,7 +1,10 @@
 package de.tobiaseberle.passwordmanager.console.command.model;
 
 import de.tobiaseberle.passwordmanager.console.Console;
-import de.tobiaseberle.passwordmanager.console.command.model.argument.*;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.AbstractArgumentValue;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentMap;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentOrder;
+import de.tobiaseberle.passwordmanager.console.command.model.argument.ArgumentType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +54,7 @@ public abstract class ConsoleCommandExecutorHelper implements ConsoleCommandExec
     public String buildHelpMessage(String commandName, boolean includeCommandDescription, boolean includeCommandOptions) {
         StringBuilder description = new StringBuilder(commandName);
 
-        ArgumentOrder argumentOrder = getAllowedOrderOfArguments().get(0);
+        ArgumentOrder argumentOrder = getAllowedOrderOfArguments().getFirst();
 
         Arrays.stream(argumentOrder.getArguments()).forEach(argumentData -> {
             description.append(" [");
