@@ -31,8 +31,8 @@ public class AddStorageEntryCommand implements ConsoleCommandExecutor {
 
     @Override
     public String getCommandDescription(String usedCommandName) {
-        return usedCommandName + """
-                [STORAGE-IDENTIFIER] [ENTRY-IDENTIFIER] [ENTRY-NAME] - Erstellt ein neuen Tresor Eintrag. Jeder Identifier kann nur einmal pro Tresor vergeben werden
+        return """
+                Erstellt ein neuen Tresor Eintrag. Jeder Identifier kann nur einmal pro Tresor vergeben werden
                 """;
     }
 

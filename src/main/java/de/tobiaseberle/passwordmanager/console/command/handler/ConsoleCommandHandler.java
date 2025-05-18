@@ -22,6 +22,7 @@ public class ConsoleCommandHandler {
         registerCommand(new AddEntryFieldCommand(console, storageHandler));
         registerCommand(new AddStorageEntryCommand(console, storageHandler));
         registerCommand(new CreateStorageCommand(console, storageHandler));
+        registerCommand(new DeleteEntryFieldCommand(console, storageHandler));
         registerCommand(new GeneratePasswordCommand(console));
         registerCommand(new GetFieldValueCommand(console, storageHandler));
         registerCommand(new ExportStorageCommand(console, storageHandler));

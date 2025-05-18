@@ -6,10 +6,12 @@ import java.util.Optional;
 
 public class Entry {
 
-    private final String identifier;
+    private String identifier;
     private String name;
 
-    private final List<Field> fields;
+    private List<Field> fields;
+
+    public Entry() {}
 
     public Entry(String identifier, String name) {
         this.identifier = identifier;
@@ -25,6 +27,10 @@ public class Entry {
 
     public String getIdentifier() {
         return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getName() {
@@ -43,7 +49,15 @@ public class Entry {
         return fields;
     }
 
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
+    }
+
     public void addField(Field field) {
         fields.add(field);
+    }
+
+    public void removeField(Field field) {
+        fields.remove(field);
     }
 }

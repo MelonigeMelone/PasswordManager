@@ -63,6 +63,7 @@ public class ImportStorageCommand extends ConsoleCommandExecutorHelper {
 
         try {
             Storage storage = storageHandler.decryptStorage(file, password);
+            storage.setIdentifier(storageIdentifier);
 
             storageHandler.addStorage(storage);
             this.console.sendMessage("Der Tresor '" + storageIdentifier + "' wurde erfolgreich importiert.");

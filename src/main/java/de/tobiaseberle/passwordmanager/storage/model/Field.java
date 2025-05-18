@@ -2,10 +2,12 @@ package de.tobiaseberle.passwordmanager.storage.model;
 
 public class Field {
 
-    private final String name;
+    private String name;
     private String value;
 
-    private final boolean isPassword;
+    private boolean isPassword;
+
+    public Field() {}
 
     public Field(String name, String value, boolean isPassword) {
         this.name = name;
@@ -15,6 +17,10 @@ public class Field {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getValue() {
@@ -27,5 +33,9 @@ public class Field {
 
     public boolean isPassword() {
         return isPassword;
+    }
+
+    public void setPassword(boolean password) {
+        isPassword = password;
     }
 }

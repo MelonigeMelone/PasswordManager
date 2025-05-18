@@ -26,8 +26,8 @@ public class GetFieldValueCommand extends ConsoleCommandExecutorHelper {
 
     @Override
     public String getCommandDescription(String usedCommandName) {
-        return usedCommandName + """
-                [STORAGE-IDENTIFIER] [ENTRY-IDENTIFIER] [FIELD-NAME]  - Gibt den Wert eines Feldes zurück
+        return """
+                Gibt den Wert eines Feldes zurück
                 """;
     }
 
