@@ -1,5 +1,7 @@
 package de.tobiaseberle.passwordmanager.storage;
 
+import de.tobiaseberle.passwordmanager.encryption.DefaultCipherProvider;
+import de.tobiaseberle.passwordmanager.encryption.DefaultKeyGenerator;
 import de.tobiaseberle.passwordmanager.json.EncryptedJsonFileWriter;
 import de.tobiaseberle.passwordmanager.storage.model.Storage;
 
@@ -13,9 +15,11 @@ import java.util.Optional;
 public class StorageHandler {
 
     private final List<Storage> loadedStorages;
+    private final EncryptedJsonFileWriter encryptedJsonFileWriter;
 
     public StorageHandler() {
         this.loadedStorages = new ArrayList<>();
+        this.encryptedJsonFileWriter = new EncryptedJsonFileWriter(new DefaultKeyGenerator(), new DefaultCipherProvider());
     }
 
     public boolean existsStorage(String identifier) {
@@ -40,7 +44,7 @@ public class StorageHandler {
     public void encryptStorage(Storage storage, String path,  String identifier) throws Exception{
         String password = storage.getPassword();
 
-        String encryptedJson = EncryptedJsonFileWriter.encryptObject(storage, password);
+        String encryptedJson = encryptedJsonFileWriter.encryptObject(storage, password);
 
         File file = new File(path + "tresor_" + identifier + ".json");
         try (FileWriter writer = new FileWriter(file)) {
@@ -50,6 +54,6 @@ public class StorageHandler {
 
     public Storage decryptStorage(File file, String password) throws Exception{
         String encryptedContent = Files.readString(file.toPath());
-        return EncryptedJsonFileWriter.decryptObject(encryptedContent, password, Storage.class);
+        return encryptedJsonFileWriter.decryptObject(encryptedContent, password, Storage.class);
     }
 }

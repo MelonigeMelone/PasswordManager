@@ -1,5 +1,7 @@
 package de.tobiaseberle.passwordmanager.util;
 
+import de.tobiaseberle.passwordmanager.encryption.DefaultCipherProvider;
+import de.tobiaseberle.passwordmanager.encryption.DefaultKeyGenerator;
 import de.tobiaseberle.passwordmanager.json.EncryptedJsonFileWriter;
 import org.junit.jupiter.api.Test;
 
@@ -9,25 +11,29 @@ public class EncryptedJsonFileWriterTest {
 
     @Test
     public void testEncryptAndDecrypt() throws Exception {
+        EncryptedJsonFileWriter encryptedJsonFileWriter = new EncryptedJsonFileWriter(
+                new DefaultKeyGenerator(), new DefaultCipherProvider());
         EncryptedJsonTestClass original = new EncryptedJsonTestClass("Alice", 42);
         String password = "correct-password";
 
-        String encrypted = EncryptedJsonFileWriter.encryptObject(original, password);
-        EncryptedJsonTestClass decrypted = EncryptedJsonFileWriter.decryptObject(encrypted, password, EncryptedJsonTestClass.class);
+        String encrypted = encryptedJsonFileWriter.encryptObject(original, password);
+        EncryptedJsonTestClass decrypted = encryptedJsonFileWriter.decryptObject(encrypted, password, EncryptedJsonTestClass.class);
 
         assertEquals(original, decrypted);
     }
 
     @Test
     public void testDecryptWithWrongPassword() throws Exception {
+        EncryptedJsonFileWriter encryptedJsonFileWriter = new EncryptedJsonFileWriter(
+                new DefaultKeyGenerator(), new DefaultCipherProvider());
         EncryptedJsonTestClass original = new EncryptedJsonTestClass("Bob", 100);
         String correctPassword = "secret";
         String wrongPassword = "wrong";
 
-        String encrypted = EncryptedJsonFileWriter.encryptObject(original, correctPassword);
+        String encrypted = encryptedJsonFileWriter.encryptObject(original, correctPassword);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            EncryptedJsonFileWriter.decryptObject(encrypted, wrongPassword, EncryptedJsonTestClass.class);
+            encryptedJsonFileWriter.decryptObject(encrypted, wrongPassword, EncryptedJsonTestClass.class);
         });
 
         assertTrue(exception.getMessage() != null && !exception.getMessage().isEmpty());
@@ -35,31 +41,37 @@ public class EncryptedJsonFileWriterTest {
 
     @Test
     public void testDecryptCorruptedData() {
+        EncryptedJsonFileWriter encryptedJsonFileWriter = new EncryptedJsonFileWriter(
+                new DefaultKeyGenerator(), new DefaultCipherProvider());
         String corrupted = "invalid-encrypted-data";
 
         assertThrows(Exception.class, () -> {
-            EncryptedJsonFileWriter.decryptObject(corrupted, "anyPassword", EncryptedJsonTestClass.class);
+            encryptedJsonFileWriter.decryptObject(corrupted, "anyPassword", EncryptedJsonTestClass.class);
         });
     }
 
     @Test
     public void testEncryptWithNullPassword() {
+        EncryptedJsonFileWriter encryptedJsonFileWriter = new EncryptedJsonFileWriter(
+                new DefaultKeyGenerator(), new DefaultCipherProvider());
         EncryptedJsonTestClass obj = new EncryptedJsonTestClass("Eve", 77);
 
         assertThrows(NullPointerException.class, () -> {
-            EncryptedJsonFileWriter.encryptObject(obj, null);
+            encryptedJsonFileWriter.encryptObject(obj, null);
         });
     }
 
     @Test
     public void testDecryptToWrongType() throws Exception {
+        EncryptedJsonFileWriter encryptedJsonFileWriter = new EncryptedJsonFileWriter(
+                new DefaultKeyGenerator(), new DefaultCipherProvider());
         EncryptedJsonTestClass original = new EncryptedJsonTestClass("Carol", 88);
         String password = "pass";
 
-        String encrypted = EncryptedJsonFileWriter.encryptObject(original, password);
+        String encrypted = encryptedJsonFileWriter.encryptObject(original, password);
 
         assertThrows(Exception.class, () -> {
-            EncryptedJsonFileWriter.decryptObject(encrypted, password, String.class);
+            encryptedJsonFileWriter.decryptObject(encrypted, password, String.class);
         });
     }
 }
